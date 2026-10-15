@@ -1,0 +1,20 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-raw-types: true
+  exclude:
+    - lib/l10n/gen/**
+    - lib/rv_experiment.dart
+
+linter:
+  rules:
+    # Kept strict (casts, types, dynamics) per spec; only stylistic
+    # rules that conflict with concise code or required patterns
+    # (e.g. ThemeExtension `of(context)`) are relaxed here.
+    public_member_api_docs: false
+    omit_local_variable_types: false
+    avoid_types_on_closure_parameters: false
+    always_put_required_named_parameters_first: false
+    prefer_constructors_over_static_methods: false
