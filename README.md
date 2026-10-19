@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AbsensiKu Admin — Dashboard Absensi Karyawan
 
 Front-end dashboard admin absensi karyawan (Flutter 3, Dart 3, Material 3).
@@ -93,3 +94,6 @@ lewat rute + ID; waktu lewat `clockProvider`; tanpa `DateTime.now()`,
 - Backend/autentikasi nyata, foto/peta asli (placeholder statis).
 - Notifikasi push, ekspor file biner, manajemen shift/lembur/lokasi.
 - Persistensi preferensi (lihat asumsi 2) dan paginasi server.
+=======
+# Absensi-flutter
+>>>>>>> 85178430831a4b58403d9a4f7194db9e9f8cf07d
