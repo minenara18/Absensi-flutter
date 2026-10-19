@@ -217,7 +217,6 @@ final class QuickAccessTile extends ConsumerWidget {
                 Text(
                   label,
                   textAlign: TextAlign.center,
-                  maxLines: 2,
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
               ],
@@ -284,7 +283,6 @@ final class MoreTile extends StatelessWidget {
                 Text(
                   strings.quickAccessAll,
                   textAlign: TextAlign.center,
-                  maxLines: 2,
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
               ],

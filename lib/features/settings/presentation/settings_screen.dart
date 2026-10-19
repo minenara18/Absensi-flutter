@@ -54,9 +54,11 @@ final class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             _GroupLabel(text: strings.profileAdmin),
-            _ThemeTile(settings: settings),
-            _LanguageTile(settings: settings),
             const SizedBox(height: AppSpacing.sm),
+            _ThemeTile(settings: settings),
+            const SizedBox(height: AppSpacing.lg),
+            _LanguageTile(settings: settings),
+            const SizedBox(height: AppSpacing.lg),
             _GroupLabel(text: strings.workHours),
             Card(
               child: ListTile(
@@ -193,6 +195,14 @@ final class _ThemeTile extends ConsumerWidget {
                 Text(label),
               ],
             ),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              strings.themeDescription,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
             const SizedBox(height: AppSpacing.xs),
             SegmentedButton<AppThemeMode>(
               segments: <ButtonSegment<AppThemeMode>>[
@@ -250,6 +260,13 @@ final class _LanguageTile extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.xs),
+            Text(
+              strings.languageDescription,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
                 ButtonSegment<String>(

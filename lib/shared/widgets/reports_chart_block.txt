@@ -1,0 +1,70 @@
+﻿        Card(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.all(AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  strings.chartMonthlyTitle(data.monthLabel),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  strings.chartSubtitle,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Semantics(
+                  label:
+                      '${strings.chartMonthlyTitle(data.monthLabel)}. '
+                      '${strings.chartSubtitle}. '
+                      '${strings.chartAverage(data.chartSummary.average.toStringAsFixed(1))}. '
+                      '${strings.chartPeak(data.chartSummary.highestDay == null ? '-' : DateFormat.E(locale).format(data.chartSummary.highestDay!), data.chartSummary.highestValue.toStringAsFixed(0))}. '
+                      '${strings.chartLow(data.chartSummary.lowestDay == null ? '-' : DateFormat.E(locale).format(data.chartSummary.lowestDay!), data.chartSummary.lowestValue.toStringAsFixed(0))}.',
+                  child: AspectRatio(
+                    aspectRatio: 1.7,
+                    child: AttendanceLineChart(
+                      points: data.chartPoints,
+                      stats: data.chartSummary,
+                      locale: locale,
+                      lineColor: scheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: scheme.primary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      strings.chartLegend,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  '${strings.chartAverage(data.chartSummary.average.toStringAsFixed(1))} '
+                  '\\u2022 '
+                  '${strings.chartPeak(data.chartSummary.highestDay == null ? '-' : DateFormat.E(locale).format(data.chartSummary.highestDay!), data.chartSummary.highestValue.toStringAsFixed(0))} '
+                  '\\u2022 '
+                  '${strings.chartLow(data.chartSummary.lowestDay == null ? '-' : DateFormat.E(locale).format(data.chartSummary.lowestDay!), data.chartSummary.lowestValue.toStringAsFixed(0))}',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),

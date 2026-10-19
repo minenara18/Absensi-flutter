@@ -1,12 +1,13 @@
+import 'package:absensi_dashboard/core/chart_math.dart';
 import 'package:absensi_dashboard/core/clock.dart';
 import 'package:absensi_dashboard/core/result.dart';
 import 'package:absensi_dashboard/data/models.dart';
 import 'package:absensi_dashboard/data/repositories.dart';
 import 'package:absensi_dashboard/features/settings/presentation/settings_notifier.dart';
 import 'package:absensi_dashboard/l10n/gen/app_localizations.dart';
+import 'package:absensi_dashboard/shared/widgets/attendance_line_chart.dart';
 import 'package:absensi_dashboard/shared/widgets/state_views.dart';
 import 'package:absensi_dashboard/theme/tokens.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,14 @@ final class ReportsData {
     required this.monthLabel,
     required this.summary,
     required this.daily,
+    this.chartPoints = const <ChartPoint>[],
+    this.chartSummary = const ChartSummary(
+      average: 0,
+      highestDay: null,
+      highestValue: 0,
+      lowestDay: null,
+      lowestValue: 0,
+    ),
     required this.exportState,
   });
 
@@ -28,6 +37,8 @@ final class ReportsData {
   final String monthLabel;
   final DailySummary summary;
   final List<DailyPoint> daily;
+  final List<ChartPoint> chartPoints;
+  final ChartSummary chartSummary;
   final ExportState exportState;
 
   ReportsData copyWith({ExportState? exportState}) {
@@ -233,7 +244,22 @@ final class _ReportsContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations strings = AppLocalizations.of(context);
+    final String locale = Localizations.localeOf(context).languageCode;
     final ReportsNotifier notifier = ref.read(reportsProvider.notifier);
+    final String chartAverageText =
+        strings.chartAverage(data.chartSummary.average.toStringAsFixed(1));
+    final String chartPeakText = strings.chartPeak(
+      data.chartSummary.highestDay == null
+          ? '-'
+          : DateFormat.E(locale).format(data.chartSummary.highestDay!),
+      data.chartSummary.highestValue.toStringAsFixed(0),
+    );
+    final String chartLowText = strings.chartLow(
+      data.chartSummary.lowestDay == null
+          ? '-'
+          : DateFormat.E(locale).format(data.chartSummary.lowestDay!),
+      data.chartSummary.lowestValue.toStringAsFixed(0),
+    );
     final ColorScheme scheme = Theme.of(context).colorScheme;
 
     return ListView(
@@ -304,41 +330,71 @@ final class _ReportsContent extends ConsumerWidget {
         const SizedBox(height: AppSpacing.sm),
         Card(
           child: Padding(
-            padding: const EdgeInsetsDirectional.all(AppSpacing.md),
-            child: SizedBox(
-              height: 220,
-              child: LineChart(
-                LineChartData(
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  titlesData: const FlTitlesData(
-                    topTitles: AxisTitles(),
-                    rightTitles: AxisTitles(),
-                    leftTitles: AxisTitles(),
-                    bottomTitles: AxisTitles(),
+            padding: const EdgeInsetsDirectional.all(AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  strings.chartMonthlyTitle(data.monthLabel),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  strings.chartSubtitle,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
                   ),
-                  lineBarsData: <LineChartBarData>[
-                    LineChartBarData(
-                      spots: <FlSpot>[
-                        for (int i = 0; i < data.daily.length; i++)
-                          FlSpot(
-                            i.toDouble(),
-                            (data.daily[i].present + data.daily[i].late)
-                                .toDouble(),
-                          ),
-                      ],
-                      isCurved: true,
-                      color: scheme.primary,
-                      barWidth: 3,
-                      dotData: const FlDotData(show: false),
-                      belowBarData: BarAreaData(
-                        show: true,
-                        color: scheme.primary.withValues(alpha: 0.15),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Semantics(
+                  label:
+                      '${strings.chartMonthlyTitle(data.monthLabel)}. '
+                      '${strings.chartSubtitle}. '
+                      '$chartAverageText. '
+                      '$chartPeakText. '
+                      '$chartLowText.',
+                  child: AspectRatio(
+                    aspectRatio: 1.7,
+                    child: AttendanceLineChart(
+                      points: data.chartPoints,
+                      stats: data.chartSummary,
+                      locale: locale,
+                      lineColor: scheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: scheme.primary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      strings.chartLegend,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
                       ),
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  '$chartAverageText '
+                  r'\u2022 '
+                  '$chartPeakText '
+                  r'\u2022 '
+                  ' ',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

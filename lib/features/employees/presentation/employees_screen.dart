@@ -4,6 +4,7 @@ import 'package:absensi_dashboard/features/employees/presentation/employees_noti
 import 'package:absensi_dashboard/l10n/gen/app_localizations.dart';
 import 'package:absensi_dashboard/shared/widgets/chips.dart';
 import 'package:absensi_dashboard/shared/widgets/state_views.dart';
+import 'package:absensi_dashboard/shared/widgets/zebra_list_item.dart';
 import 'package:absensi_dashboard/theme/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -120,7 +121,11 @@ final class _ListContent extends StatelessWidget {
         if (index == 0) {
           return _SearchBar(query: data.query);
         }
-        return _EmployeeTile(employee: rows[index - 1]);
+        return _EmployeeTile(
+          key: ValueKey<String>(rows[index - 1].id),
+          employee: rows[index - 1],
+          index: index - 1,
+        );
       },
     );
   }
@@ -151,45 +156,52 @@ final class _SearchBar extends ConsumerWidget {
 }
 
 final class _EmployeeTile extends StatelessWidget {
-  const _EmployeeTile({required this.employee});
+  const _EmployeeTile({
+    super.key,
+    required this.employee,
+    required this.index,
+  });
 
   final Employee employee;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: () => context.push('/employees/${employee.id}'),
-        borderRadius: const BorderRadius.all(Radius.circular(AppRadius.lg)),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.all(AppSpacing.md),
-          child: Row(
-            children: <Widget>[
-              InitialAvatar(name: employee.name),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      employee.name,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    const SizedBox(height: AppSpacing.xxs),
-                    Text(
-                      '${employee.position} • ${employee.department}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+    return ZebraListItem(
+      index: index,
+      onTap: () => context.push('/employees/${employee.id}'),
+      child: Row(
+        children: <Widget>[
+          InitialAvatar(name: employee.name),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  employee.name,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              _ActiveDot(active: employee.active),
-            ],
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  '${employee.position} â€¢ ${employee.department}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          const SizedBox(width: AppSpacing.sm),
+          _ActiveDot(active: employee.active),
+          const SizedBox(width: AppSpacing.xs),
+          ExcludeSemantics(
+            child: Icon(
+              Icons.chevron_right_rounded,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
       ),
     );
   }

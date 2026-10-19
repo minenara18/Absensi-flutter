@@ -32,6 +32,7 @@ final class AbsensiApp extends ConsumerWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(appRouterProvider),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -63,7 +63,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get qaAddEmployee => 'Tambah Karyawan';
 
   @override
-  String get qaApprovals => 'Persetujuan Izin';
+  String get qaApprovals => 'Setujui Izin';
 
   @override
   String get qaOvertime => 'Lembur';
@@ -434,4 +434,46 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get toggleFavorite => 'Jadikan favorit';
+
+  @override
+  String get chartWeekTitle => 'Kehadiran 7 Hari Terakhir';
+
+  @override
+  String get chartSubtitle => 'Jumlah karyawan hadir per hari';
+
+  @override
+  String get chartMonthSummary => 'Kehadiran Bulan Ini';
+
+  @override
+  String chartAverage(Object value) {
+    return 'Rata-rata: $value orang/hari';
+  }
+
+  @override
+  String chartPeak(Object day, Object value) {
+    return 'Hari tertinggi: $day ($value)';
+  }
+
+  @override
+  String chartLow(Object day, Object value) {
+    return 'Hari terendah: $day ($value)';
+  }
+
+  @override
+  String get chartLegend => 'Kehadiran (Hadir + Terlambat)';
+
+  @override
+  String get themeDescription =>
+      'Pilih tampilan terang, gelap, atau ikuti sistem.';
+
+  @override
+  String get languageDescription => 'Bahasa antarmuka aplikasi.';
+
+  @override
+  String get monthlyChartTitle => 'Kehadiran Bulan Ini';
+
+  @override
+  String chartMonthlyTitle(String month) {
+    return 'Kehadiran $month';
+  }
 }

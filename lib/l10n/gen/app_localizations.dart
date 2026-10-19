@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// No description provided for @qaApprovals.
   ///
   /// In id, this message translates to:
-  /// **'Persetujuan Izin'**
+  /// **'Setujui Izin'**
   String get qaApprovals;
 
   /// No description provided for @qaOvertime.
@@ -943,6 +943,72 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Jadikan favorit'**
   String get toggleFavorite;
+
+  /// No description provided for @chartWeekTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kehadiran 7 Hari Terakhir'**
+  String get chartWeekTitle;
+
+  /// No description provided for @chartSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Jumlah karyawan hadir per hari'**
+  String get chartSubtitle;
+
+  /// No description provided for @chartMonthSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Kehadiran Bulan Ini'**
+  String get chartMonthSummary;
+
+  /// No description provided for @chartAverage.
+  ///
+  /// In id, this message translates to:
+  /// **'Rata-rata: {value} orang/hari'**
+  String chartAverage(Object value);
+
+  /// No description provided for @chartPeak.
+  ///
+  /// In id, this message translates to:
+  /// **'Hari tertinggi: {day} ({value})'**
+  String chartPeak(Object day, Object value);
+
+  /// No description provided for @chartLow.
+  ///
+  /// In id, this message translates to:
+  /// **'Hari terendah: {day} ({value})'**
+  String chartLow(Object day, Object value);
+
+  /// No description provided for @chartLegend.
+  ///
+  /// In id, this message translates to:
+  /// **'Kehadiran (Hadir + Terlambat)'**
+  String get chartLegend;
+
+  /// No description provided for @themeDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih tampilan terang, gelap, atau ikuti sistem.'**
+  String get themeDescription;
+
+  /// No description provided for @languageDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Bahasa antarmuka aplikasi.'**
+  String get languageDescription;
+
+  /// No description provided for @monthlyChartTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kehadiran Bulan Ini'**
+  String get monthlyChartTitle;
+
+  /// No description provided for @chartMonthlyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kehadiran {month}'**
+  String chartMonthlyTitle(String month);
 }
 
 class _AppLocalizationsDelegate

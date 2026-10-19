@@ -1,3 +1,4 @@
+import 'package:absensi_dashboard/core/chart_math.dart';
 import 'package:absensi_dashboard/core/clock.dart';
 import 'package:absensi_dashboard/core/result.dart';
 import 'package:absensi_dashboard/data/models.dart';
@@ -38,6 +39,22 @@ final class RecentActivity {
   int get hashCode => Object.hash(record, employeeName, department);
 }
 
+final class ChartStats {
+  const ChartStats({
+    required this.average,
+    required this.peakDay,
+    required this.peakValue,
+    required this.lowDay,
+    required this.lowValue,
+  });
+
+  final double average;
+  final DateTime? peakDay;
+  final int peakValue;
+  final DateTime? lowDay;
+  final int lowValue;
+}
+
 /// Immutable dashboard view-state. Totals/percentages are derived,
 /// never stored separately.
 @immutable
@@ -52,6 +69,9 @@ final class DashboardData {
     required this.recent,
     required this.chart,
     required this.chartRange,
+    required this.chartPoints,
+    required this.chartSummary,
+    required this.chartStats,
     required this.pendingCount,
     required this.searchQuery,
   });
@@ -67,6 +87,9 @@ final class DashboardData {
   final List<RecentActivity> recent;
   final List<DailyPoint> chart;
   final ChartRange chartRange;
+  final ChartStats chartStats;
+  final List<ChartPoint> chartPoints;
+  final ChartSummary chartSummary;
   final int pendingCount;
   final String searchQuery;
 
@@ -87,6 +110,9 @@ final class DashboardData {
 
   DashboardData copyWith({
     ChartRange? chartRange,
+    ChartStats? chartStats,
+    List<ChartPoint>? chartPoints,
+    ChartSummary? chartSummary,
     List<DailyPoint>? chart,
     String? searchQuery,
   }) {
@@ -100,6 +126,9 @@ final class DashboardData {
       recent: recent,
       chart: chart ?? this.chart,
       chartRange: chartRange ?? this.chartRange,
+      chartStats: chartStats ?? this.chartStats,
+      chartPoints: chartPoints ?? this.chartPoints,
+      chartSummary: chartSummary ?? this.chartSummary,
       pendingCount: pendingCount,
       searchQuery: searchQuery ?? this.searchQuery,
     );
@@ -118,6 +147,9 @@ final class DashboardData {
           other.recent == recent &&
           other.chart == chart &&
           other.chartRange == chartRange &&
+          other.chartStats == chartStats &&
+          other.chartPoints == chartPoints &&
+          other.chartSummary == chartSummary &&
           other.pendingCount == pendingCount &&
           other.searchQuery == searchQuery);
 
@@ -132,6 +164,9 @@ final class DashboardData {
     recent,
     chart,
     chartRange,
+    chartStats,
+    chartPoints,
+    chartSummary,
     pendingCount,
     searchQuery,
   );
@@ -249,6 +284,12 @@ final class DashboardNotifier extends AsyncNotifier<DashboardData> {
         (summary.present + summary.late) -
         (yesterdaySummary.present + yesterdaySummary.late);
 
+    final ChartStats chartStats = _chartStats(chart);
+    final List<ChartPoint> chartPoints = ChartMath.attendancePoints(
+      chart,
+      now,
+    );
+    final ChartSummary chartSummary = ChartMath.summary(chartPoints);
     final int hour = now.hour;
     final DayPart part = hour < 11
         ? DayPart.morning
@@ -268,6 +309,9 @@ final class DashboardNotifier extends AsyncNotifier<DashboardData> {
       recent: recent,
       chart: chart,
       chartRange: range,
+      chartStats: chartStats,
+      chartPoints: chartPoints,
+      chartSummary: chartSummary,
       pendingCount: pending,
       searchQuery: query,
     );
@@ -301,10 +345,54 @@ final class DashboardNotifier extends AsyncNotifier<DashboardData> {
     }
     switch (res) {
       case Ok(:final List<DailyPoint> value):
-        state = AsyncData<DashboardData>(latest.copyWith(chart: value));
+        final List<ChartPoint> points = ChartMath.attendancePoints(
+          value,
+          ref.read(clockProvider).now(),
+        );
+        state = AsyncData<DashboardData>(
+          latest.copyWith(
+            chart: value,
+            chartStats: _chartStats(value),
+            chartPoints: points,
+            chartSummary: ChartMath.summary(points),
+          ),
+        );
       case Err():
         break;
     }
+  }
+
+  ChartStats _chartStats(List<DailyPoint> points) {
+    final List<int> counts = points
+        .map((DailyPoint p) => p.present + p.late)
+        .toList();
+    if (counts.isEmpty) {
+      return const ChartStats(
+        average: 0,
+        peakDay: null,
+        peakValue: 0,
+        lowDay: null,
+        lowValue: 0,
+      );
+    }
+    final double avg = counts.reduce((int a, int b) => a + b) / counts.length;
+    int peakIndex = 0;
+    int lowIndex = 0;
+    for (int i = 1; i < counts.length; i++) {
+      if (counts[i] > counts[peakIndex]) {
+        peakIndex = i;
+      }
+      if (counts[i] < counts[lowIndex]) {
+        lowIndex = i;
+      }
+    }
+    return ChartStats(
+      average: avg,
+      peakDay: points[peakIndex].day,
+      peakValue: counts[peakIndex],
+      lowDay: points[lowIndex].day,
+      lowValue: counts[lowIndex],
+    );
   }
 
   void setQuery(String query) {

@@ -89,7 +89,9 @@
   "pendingBanner": "{count} leave requests awaiting approval",
   "@pendingBanner": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "reviewNow": "Review Now",
@@ -285,5 +287,33 @@
   "moveDown": "Move down",
   "@moveDown": {},
   "toggleFavorite": "Toggle favorite",
-  "@toggleFavorite": {}
+  "@toggleFavorite": {},
+  "chartWeekTitle": "Attendance: Last 7 Days",
+  "@chartWeekTitle": {},
+  "chartSubtitle": "Number of employees present per day",
+  "@chartSubtitle": {},
+  "chartMonthSummary": "Attendance This Month",
+  "@chartMonthSummary": {},
+  "chartAverage": "Average: {value} per day",
+  "@chartAverage": {},
+  "chartPeak": "Highest day: {day} ({value})",
+  "@chartPeak": {},
+  "chartLow": "Lowest day: {day} ({value})",
+  "@chartLow": {},
+  "chartLegend": "Attendance (Present + Late)",
+  "@chartLegend": {},
+  "themeDescription": "Choose light, dark, or follow the system.",
+  "@themeDescription": {},
+  "languageDescription": "Application interface language.",
+  "@languageDescription": {},
+  "monthlyChartTitle": "Attendance This Month",
+  "@monthlyChartTitle": {},
+  "chartMonthlyTitle": "Attendance {month}",
+  "@chartMonthlyTitle": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  }
 }

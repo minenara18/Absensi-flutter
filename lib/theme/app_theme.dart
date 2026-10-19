@@ -157,6 +157,9 @@ abstract final class AppTheme {
             Color(0xFFFBCFE8),
             Color(0xFFBAE6FD),
           ],
+          zebraSurface: isDark
+              ? AppPalette.surfaceContainerDark
+              : AppPalette.surfaceContainerLight,
         ),
       ],
       textTheme: text(base.textTheme),
@@ -202,13 +205,58 @@ abstract final class AppTheme {
           fontSize: AppFontSize.caption,
         ),
       ),
-      chipTheme: base.chipTheme.copyWith(
-        shape: const StadiumBorder(),
-        labelStyle: const TextStyle(
+      chipTheme: ChipThemeData(
+        backgroundColor: isDark
+            ? AppPalette.surfaceContainerDark
+            : AppPalette.surfaceContainerLight,
+        selectedColor: scheme.primaryContainer,
+        labelStyle: TextStyle(
           fontFamily: fontFamily,
           fontSize: AppFontSize.caption,
           fontWeight: FontWeight.w600,
+          color: scheme.onSurfaceVariant,
         ),
+        secondaryLabelStyle: TextStyle(
+          fontFamily: fontFamily,
+          fontSize: AppFontSize.caption,
+          fontWeight: FontWeight.w600,
+          color: scheme.onPrimaryContainer,
+        ),
+        shape: const StadiumBorder(),
+        side: BorderSide(color: scheme.outline),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.selected)) {
+              return scheme.primaryContainer;
+            }
+            return isDark
+                ? AppPalette.surfaceContainerDark
+                : AppPalette.surfaceContainerLight;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.selected)) {
+              return scheme.onPrimaryContainer;
+            }
+            return scheme.onSurfaceVariant;
+          }),
+          side: WidgetStateProperty.resolveWith<BorderSide?>(
+            (Set<WidgetState> states) => BorderSide(color: scheme.outline),
+          ),
+          textStyle: const WidgetStatePropertyAll<TextStyle>(
+            TextStyle(
+              fontFamily: fontFamily,
+              fontSize: AppFontSize.caption,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        selectedIcon: const Icon(Icons.check_rounded),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(

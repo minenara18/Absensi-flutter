@@ -23,6 +23,8 @@ abstract final class AppPalette {
   static const Color cardLight = Color(0xFFFFFFFF);
   static const Color backgroundDark = Color(0xFF11131A);
   static const Color cardDark = Color(0xFF1B1E28);
+  static const Color surfaceContainerLight = Color(0xFFF2F4FA);
+  static const Color surfaceContainerDark = Color(0xFF232633);
 
   // Text
   static const Color inkLight = Color(0xFF17182B);
@@ -103,6 +105,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     required this.card,
     required this.softTint,
     required this.avatarBackgrounds,
+    required this.zebraSurface,
   });
 
   const AppTokens.fallback()
@@ -120,7 +123,8 @@ final class AppTokens extends ThemeExtension<AppTokens> {
         Color(0xFFFDE68A),
         Color(0xFFFBCFE8),
         Color(0xFFBAE6FD),
-      ];
+      ],
+      zebraSurface = AppPalette.surfaceContainerLight;
 
   final Color success;
   final Color warning;
@@ -130,6 +134,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
   final Color card;
   final Color softTint;
   final List<Color> avatarBackgrounds;
+  final Color zebraSurface;
 
   static AppTokens of(BuildContext context) {
     final AppTokens? tokens = Theme.of(context).extension<AppTokens>();
@@ -147,6 +152,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     Color? card,
     Color? softTint,
     List<Color>? avatarBackgrounds,
+    Color? zebraSurface,
   }) {
     return AppTokens(
       success: success ?? this.success,
@@ -157,6 +163,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
       card: card ?? this.card,
       softTint: softTint ?? this.softTint,
       avatarBackgrounds: avatarBackgrounds ?? this.avatarBackgrounds,
+      zebraSurface: zebraSurface ?? this.zebraSurface,
     );
   }
 
@@ -175,6 +182,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
       card: lerpColor(card, other.card),
       softTint: lerpColor(softTint, other.softTint),
       avatarBackgrounds: avatarBackgrounds,
+      zebraSurface: lerpColor(zebraSurface, other.zebraSurface),
     );
   }
 }

@@ -435,4 +435,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toggleFavorite => 'Toggle favorite';
+
+  @override
+  String get chartWeekTitle => 'Attendance: Last 7 Days';
+
+  @override
+  String get chartSubtitle => 'Number of employees present per day';
+
+  @override
+  String get chartMonthSummary => 'Attendance This Month';
+
+  @override
+  String chartAverage(Object value) {
+    return 'Average: $value per day';
+  }
+
+  @override
+  String chartPeak(Object day, Object value) {
+    return 'Highest day: $day ($value)';
+  }
+
+  @override
+  String chartLow(Object day, Object value) {
+    return 'Lowest day: $day ($value)';
+  }
+
+  @override
+  String get chartLegend => 'Attendance (Present + Late)';
+
+  @override
+  String get themeDescription => 'Choose light, dark, or follow the system.';
+
+  @override
+  String get languageDescription => 'Application interface language.';
+
+  @override
+  String get monthlyChartTitle => 'Attendance This Month';
+
+  @override
+  String chartMonthlyTitle(String month) {
+    return 'Attendance $month';
+  }
 }

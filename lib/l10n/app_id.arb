@@ -36,7 +36,7 @@
   "@qaToday": {},
   "qaAddEmployee": "Tambah Karyawan",
   "@qaAddEmployee": {},
-  "qaApprovals": "Persetujuan Izin",
+  "qaApprovals": "Setujui Izin",
   "@qaApprovals": {},
   "qaOvertime": "Lembur",
   "@qaOvertime": {},
@@ -89,7 +89,9 @@
   "pendingBanner": "{count} permintaan izin menunggu persetujuan",
   "@pendingBanner": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "reviewNow": "Tinjau Sekarang",
@@ -285,5 +287,33 @@
   "moveDown": "Pindah ke bawah",
   "@moveDown": {},
   "toggleFavorite": "Jadikan favorit",
-  "@toggleFavorite": {}
+  "@toggleFavorite": {},
+  "chartWeekTitle": "Kehadiran 7 Hari Terakhir",
+  "@chartWeekTitle": {},
+  "chartSubtitle": "Jumlah karyawan hadir per hari",
+  "@chartSubtitle": {},
+  "chartMonthSummary": "Kehadiran Bulan Ini",
+  "@chartMonthSummary": {},
+  "chartAverage": "Rata-rata: {value} orang/hari",
+  "@chartAverage": {},
+  "chartPeak": "Hari tertinggi: {day} ({value})",
+  "@chartPeak": {},
+  "chartLow": "Hari terendah: {day} ({value})",
+  "@chartLow": {},
+  "chartLegend": "Kehadiran (Hadir + Terlambat)",
+  "@chartLegend": {},
+  "themeDescription": "Pilih tampilan terang, gelap, atau ikuti sistem.",
+  "@themeDescription": {},
+  "languageDescription": "Bahasa antarmuka aplikasi.",
+  "@languageDescription": {},
+  "monthlyChartTitle": "Kehadiran Bulan Ini",
+  "@monthlyChartTitle": {},
+  "chartMonthlyTitle": "Kehadiran {month}",
+  "@chartMonthlyTitle": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  }
 }
